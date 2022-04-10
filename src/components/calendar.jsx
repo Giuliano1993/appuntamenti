@@ -1,5 +1,5 @@
 import React from 'react'
-import { format } from 'date-fns'
+import { format, addMonths, subMonths, startOfWeek, endOfWeek, addDays, startOfMonth, endOfMonth, isSameMonth, isSameDay, parse } from 'date-fns'
 
 
 class Calendar extends React.Component {
@@ -9,7 +9,7 @@ class Calendar extends React.Component {
     }
 
     renderHeader(){
-        const dateFormat = "dd mm yyyy"
+        const dateFormat = "dd M Y"
         return (
         <div className="header row flex-middle">
             <div className="col col-start">
@@ -29,15 +29,78 @@ class Calendar extends React.Component {
       )
 
     }
-    renderDays(){}
-    renderCells(){}
+    renderDays(){
+        const dayFormat = "iiii";
+        var days = [];
+        let startDate = startOfWeek(this.state.currentMonth);
+
+        for(let i= 0; i<7; i++){
+            days.push(<div className="col col-center" key={i}>
+                {format(addDays(startDate, i), dayFormat)}
+            </div>)
+        }
+        return <div className="days row">{days}</div>
+
+    }
+    renderCells(){
+
+        const { currentMonth, selectedDate } = this.state;
+        const monthStart = startOfMonth(currentMonth);
+        const monthEnd = endOfMonth(monthStart);
+        const startDate = startOfWeek(monthStart);
+        const endDate = endOfWeek(monthEnd);
+
+        const dateFormat = 'd';
+        const rows = [];
+        let days = [];
+        let day = startDate;
+        let formattedDate = "";
 
 
-    onDateClick = day => {}
+        while(day <= endDate){
+            for(let i = 0; i < 7; i++){
+                formattedDate = format(day,dateFormat)
+                const cloneDay = day;
+                days.push(
+                    <div className={`col cell ${
+                        !isSameMonth(day,monthStart) ? "disabled" : isSameDay(day, selectedDate) ? "selected" : ""
+                    }`}
+                    key={day}
+                    onClick={()=>this.onDateClick(cloneDay)}>
+                        <span className="number">{formattedDate}</span>
+                        <span className="bg">{formattedDate}</span>
+                    </div>
+                )
+                day = addDays(day,1);
+            }
+            rows.push(
+                <div className="row" key={day}>
+                    {days}
+                </div>
+            );
+            days = []
+        }
+        return <div className="body">{rows}</div>
+    }
 
-    nextMonth = ()=>{}
 
-    prevMonth = ()=>{}
+    onDateClick = day => {
+        this.setState({ 
+            selectedDate: day
+        })
+    }
+
+    nextMonth = ()=>{
+        this.setState({
+            currentMonth: addMonths(this.state.currentMonth,1)
+        })
+    }
+
+    prevMonth = ()=>{
+        this.setState({
+            currentMonth: subMonths(this.state.currentMonth,1)
+        })
+    }
 
 
     render(){
