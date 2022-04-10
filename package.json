@@ -16,7 +16,6 @@
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.0",
-    "tailwindcss": "^3.0.23",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -48,6 +47,9 @@
     "@babel/core": "^7.17.8",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
+    "autoprefixer": "^10.4.4",
+    "postcss": "^8.4.12",
+    "tailwindcss": "^3.0.23",
     "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2"
   }

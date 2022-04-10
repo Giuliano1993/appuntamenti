@@ -15,7 +15,7 @@ import {
 function App() {
   return (
     <div>
-      <Navigation className="w100 h100"></Navigation>
+      <Navigation className="mt-1 w100 h100"></Navigation>
     </div>
 
   );

@@ -8,23 +8,37 @@ import {
     Link
   } from "react-router-dom";
   
+const menu = [
+    {
+        route: '/',
+        caption: 'Home',
+        element: <Home/>
+    },
+    {
+        route: '/calendar',
+        caption: 'Calendario',
+        element: <CalendarPage/>
+    },
+
+];
+
 const Navigation = ()=>{
     return(
     <Router>
     <div className="w100 h100">
-    <nav className="flex flex-row mt-4 md:space-x-8 md:mt-0 md:text-sm md:font-medium">
-      <ul>
-        <li className="py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"> 
-          <Link to="/">Home</Link>
-        </li>
-        <li className=" py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"> 
-          <Link to="/calendar">Calendar</Link>
-        </li>
+    <nav className="flex flex-row mt-4">
+      <ul className="flex fles-row">
+        {menu.map((v)=>(
+            <li className="block py-2 pr-4 pl-4 text-white bg-blue-900 rounded "> 
+                <Link to={v.route}>{v.caption}</Link>
+            </li>
+        ))}
       </ul>
     </nav>
     <Routes>
-      <Route path="/" element={<Home />}> </Route>
-      <Route path="/calendar" element={<CalendarPage />}> </Route>
+        {menu.map((v)=>(
+            <Route path={v.route} element={v.element}> </Route>
+        ))}
     </Routes>
   </div>
   </Router>)
