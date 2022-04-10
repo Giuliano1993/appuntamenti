@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    fontSize: {
+      'title': ['64px',{ letterSpacing: '-0.01em',}]
+    }
   },
   plugins: [
     require('flowbite/plugin')
