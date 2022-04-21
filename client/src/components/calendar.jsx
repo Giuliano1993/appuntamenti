@@ -1,15 +1,37 @@
 import React from 'react'
-import { format, addMonths, subMonths, startOfWeek, endOfWeek, addDays, startOfMonth, endOfMonth, isSameMonth, isSameDay, parse } from 'date-fns'
-
+import { format, addMonths, subMonths, startOfWeek, endOfWeek, addDays, startOfMonth, endOfMonth, isSameMonth, isSameDay } from 'date-fns'
+import Modal from './modal'
 
 class Calendar extends React.Component {
     state = {
         currentMonth: new Date(),
-        selectedDate: new Date()
+        selectedDate: new Date(),
+        showModal: false
     }
 
-    renderHeader(){
-        const dateFormat = "dd M Y"
+
+    setShowModal = show => {
+        this.setState({ 
+            showModal: show
+        })
+    }
+    
+    saveAppointement = data => {
+     console.log(data)
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        };
+        fetch('/appuntamento', requestOptions)
+            .then(response => response.json())
+            .then(data => console.log(data));
+        
+
+    }
+
+    renderHeader = ()=>{
+        const dateFormat = "dd/M/Y"
         return (
         <div className="header row flex-middle">
             <div className="col col-start">
@@ -66,7 +88,7 @@ class Calendar extends React.Component {
                         !isSameMonth(day,monthStart) ? "disabled" : isSameDay(day, selectedDate) ? "selected" : ""
                     }`}
                     key={day}
-                    onClick={()=>this.onDateClick(cloneDay)}>
+                    onClick={!isSameDay(day, selectedDate) ? ()=>this.onDateClick(cloneDay) : ()=>this.setShowModal(true)}>
                         <span className="number">{formattedDate}</span>
                         <span className="bg">{formattedDate}</span>
                     </div>
@@ -109,6 +131,7 @@ class Calendar extends React.Component {
                 {this.renderHeader()}
                 {this.renderDays()}
                 {this.renderCells()}
+                <Modal onClose={()=>this.setShowModal(false)} show={this.state.showModal} onSave={this.saveAppointement}></Modal>
             </div>
           );
     }
