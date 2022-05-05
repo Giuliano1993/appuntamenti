@@ -17,7 +17,7 @@ class Calendar extends React.Component {
     }
     
     saveAppointement = data => {
-     console.log(data)
+        data.date = data.date
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -106,6 +106,7 @@ class Calendar extends React.Component {
     }
 
 
+
     onDateClick = day => {
         this.setState({ 
             selectedDate: day
@@ -124,14 +125,18 @@ class Calendar extends React.Component {
         })
     }
 
+    changeDataHandle = (d)=>{
+        this.setState({selectedDate:d})
+    }
 
     render(){
+        const data = this.state.selectedDate;
         return (
             <div className="calendar">
                 {this.renderHeader()}
                 {this.renderDays()}
                 {this.renderCells()}
-                <Modal onClose={()=>this.setShowModal(false)} show={this.state.showModal} onSave={this.saveAppointement}></Modal>
+                <Modal data={this.state.selectedDate} onChangeData={this.changeDataHandle} onClose={()=>this.setShowModal(false)} show={this.state.showModal} onSave={this.saveAppointement}></Modal>
             </div>
           );
     }

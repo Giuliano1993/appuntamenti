@@ -16,8 +16,6 @@ app.use(function(req, res, next) {
   
 
 app.get('/', function(req, res){
-    console.log(req)
-    console.log(res)
     res.send('This is the home page!');
 })
 app.post('/appuntamento', function(req, res){
@@ -26,10 +24,10 @@ app.post('/appuntamento', function(req, res){
     db.serialize(() => {
         const stmt = db.prepare("INSERT INTO appuntamenti VALUES (?,?,?)");
         let date_ob = new Date();
-        stmt.run([`${data.title}`,`${data.description}`,date_ob.getTime()]);
+        stmt.run([`${data.title}`,`${data.description}`,data.date]);
         stmt.finalize();
     });
-    db.close();
+    //db.close();
     res.sendStatus(200);
 })
 

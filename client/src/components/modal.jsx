@@ -1,24 +1,35 @@
 import React from 'react'
 //import { format, addMonths, subMonths, startOfWeek, endOfWeek, addDays, startOfMonth, endOfMonth, isSameMonth, isSameDay, parse } from 'date-fns'
+import DateTimePicker from 'react-datetime-picker';
 
 
 class Modal extends React.Component {
 
-    state = {
-        title : '',
-        description: '',
-        date: ''
-    }
+    
 
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.state = {
+            title : '',
+            description: '',
+            date: ''
+        }
+      }
 
     onSave =  (e)=>{
         this.props.onSave(this.state)
         e.preventDefault();
     }
 
+    handleChange = (value)=>{
+        this.props.onChangeData(value);
+        this.setState({date:value});
+        
+    }
 
     render(){  
-        console.log(this.props.show)
+        const data = this.props.data
         return(
         <div id="appuntamentoModal" tabIndex="-1" aria-hidden="true" className={"overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full " + (this.props.show ? "" : "hidden")}>
             <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
@@ -39,8 +50,8 @@ class Modal extends React.Component {
                         <label htmlFor="descrizione" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Descrizione</label>
                         <input type="text" id="descrizione" name="descrizione"  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={this.state.description} onChange={e=>{this.setState({description:e.target.value})}}></input>
                         <label htmlFor="data" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Data</label>
-                        <input type="datePicker" id="data" name="data" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={this.state.date} onChange={e=>{this.setState({date:e.target.value})}}></input>
-                        
+                        {/*<input type="datePicker" id="data" name="data" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={data} onChange={e=>{this.handleChange()}}></input>]*/}
+                        <DateTimePicker  id="data" name="data" value={data} onChange={e=>{this.handleChange(e)}} />
                     </div>
                     <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
                         <button data-modal-toggle="defaultModal" type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={this.onSave}>Salva</button>
